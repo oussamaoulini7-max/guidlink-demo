@@ -2,25 +2,35 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #001F54;
+  --primary: #001F54;
+  --accent: #FFD700;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+}
+
+/* Glassmorphism utility for older browsers compatibility if needed, 
+   though we used it mainly in the futuristic design, 
+   the previous design might have had some subtle versions. */
+.glass {
+  @apply bg-white/80 backdrop-blur-md border border-white/20;
 }

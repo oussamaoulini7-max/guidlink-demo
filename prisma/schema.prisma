@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  TRAVELER
+  GUIDE
+}
+
+enum BookingStatus {
+  PENDING
+  PAID
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      Role     @default(TRAVELER)
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  guideProfile    GuideProfile?
+  bookings        Booking[]        @relation("TravelerBookings")
+  redirectionLogs RedirectionLog[]
+  sentMessages    ChatMessage[]    @relation("Sender")
+}
+
+model GuideProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  city            String
+  bio             String
+  certificationId String   @unique
+  dailyRate       Float
+  specialties     String   // Comma separated list for simplicity
+  status          String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  bookings Booking[] @relation("GuideBookings")
+}
+
+model Booking {
+  id             String        @id @default(uuid())
+  travelerId     String
+  traveler       User          @relation("TravelerBookings", fields: [travelerId], references: [id])
+  guideId        String
+  guide          GuideProfile  @relation("GuideBookings", fields: [guideId], references: [id])
+  duration       Int           // Number of days
+  numberOfPeople Int
+  totalAmount    Float
+  status         BookingStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  messages ChatMessage[]
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  senderId  String
+  sender    User     @relation("Sender", fields: [senderId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model RedirectionLog {
+  id            String   @id @default(uuid())
+  travelerId    String?
+  traveler      User?    @relation(fields: [travelerId], references: [id])
+  originalCity  String
+  suggestedCity String
+  accepted      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
