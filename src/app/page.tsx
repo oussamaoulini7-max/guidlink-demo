@@ -24,7 +24,9 @@ export default function Home() {
             src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=2070&auto=format&fit=crop"
             alt="Morocco Sahara"
             fill
+            priority
             className="object-cover opacity-40"
+            sizes="100vw"
           />
         </div>
         
@@ -123,7 +125,7 @@ export default function Home() {
             {FEATURED_GUIDES.map((guide) => (
               <div key={guide.id} className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all overflow-hidden">
                 <div className="relative h-64">
-                  <Image src={guide.img} alt={guide.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <Image src={guide.img} alt={guide.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 100vw, 33vw" />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center text-xs font-bold text-[#001F54] shadow-sm">
                     <ShieldCheck size={14} className="mr-1 text-green-600" /> Verified
                   </div>

@@ -120,7 +120,7 @@ export default function GuideMarketplace() {
                     </div>
                   </div>
                   <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-md z-10 group-hover:scale-105 transition-transform duration-300">
-                    <Image src={guide.img} alt={guide.name} fill className="object-cover" />
+                    <Image src={guide.img} alt={guide.name} fill className="object-cover" sizes="112px" />
                   </div>
                   {/* Decorative background */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#001F54]/5 to-[#FFD700]/10"></div>
