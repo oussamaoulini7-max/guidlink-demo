@@ -1,11 +1,10 @@
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
+const { PrismaBetterSqlite3 } = require('@prisma/adapter-better-sqlite3');
 
-if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = 'file:./prisma/dev.db';
-}
-
-const prisma = new PrismaClient();
+const dbUrl = process.env.DATABASE_URL || 'prisma/dev.db';
+const adapter = new PrismaBetterSqlite3({ url: dbUrl.replace('file:', '') });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   // Create Admin

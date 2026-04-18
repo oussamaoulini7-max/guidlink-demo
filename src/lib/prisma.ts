@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 const prismaClientSingleton = () => {
-  return new PrismaClient();
+  // In Prisma 7, the adapter handles the connection internally via the provided URL
+  const adapter = new PrismaBetterSqlite3({ url: "prisma/dev.db" });
+  return new PrismaClient({ adapter });
 };
 
 declare const globalThis: {
